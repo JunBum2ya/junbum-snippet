@@ -1,24 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
+import SelectBox from "./component/SelectBox";
 
 function App() {
+
+  const [text, setText] = useState("");
+  const [data, setData]
+      = useState<{label: string, value: string}[]>([
+      {label: "red", value: "C001"},
+      {label: "blue", value: "C002"},
+      {label: "yellow", value: "C003"}
+  ]);
+
+  const handleChangeSelectBox = (value: string) => {
+    alert(value);
+  };
+
+  const handleClickButton = () => {
+    data.push({value: text, label: text});
+    setText(() => "");
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div style={{width: '100px'}}>
+        <SelectBox data={data} onChange={handleChangeSelectBox}/>
+        <input value={text} onChange={(event) => setText(event.target.value)}/>
+        <button onClick={handleClickButton}>셀렉트 박스 추가</button>
+      </div>
     </div>
   );
 }
