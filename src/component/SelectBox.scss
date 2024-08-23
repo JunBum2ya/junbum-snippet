@@ -1,0 +1,20 @@
+.select_box {
+  width: 100%;
+  border: #000 solid 1px;
+  background-color: transparent;
+  .menu {
+    display: none;
+    &.open {
+      display: block;
+    }
+    .item {
+      background-color: transparent;
+      &.selected {
+        background-color: #f1f3f5;
+      }
+      &:hover {
+        background-color: #f1f3f5;
+      }
+    }
+  }
+}
