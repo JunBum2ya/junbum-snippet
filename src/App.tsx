@@ -1,35 +1,41 @@
-import React, {useState} from 'react';
 import './App.css';
-import SelectBox from "./component/SelectBox";
+
+import {useCallback, useEffect, useReducer} from "react";
+import {LoadingEffect, LoadingEffectState, loadingBarReducer} from "./component/loadingEffect/LoadingEffect";
+
+const initialState: LoadingEffectState = { on: false, process: 0 };
 
 function App() {
 
-  const [text, setText] = useState("");
-  const [data, setData]
-      = useState<{label: string, value: string}[]>([
-      {label: "red", value: "C001"},
-      {label: "blue", value: "C002"},
-      {label: "yellow", value: "C003"}
-  ]);
+    const [state, dispatch] = useReducer(loadingBarReducer, initialState);
 
-  const handleChangeSelectBox = (value: string) => {
-    alert(value);
-  };
+    useEffect(() => {
+        let timeout: NodeJS.Timeout | null = null;
 
-  const handleClickButton = () => {
-    data.push({value: text, label: text});
-    setText(() => "");
-  };
+        if (state.on) {
+            timeout = setTimeout(() => dispatch({ type: 'PROCESS' }), 1000);
 
-  return (
-    <div className="App">
-      <div style={{width: '100px'}}>
-        <SelectBox data={data} onChange={handleChangeSelectBox}/>
-        <input value={text} onChange={(event) => setText(event.target.value)}/>
-        <button onClick={handleClickButton}>셀렉트 박스 추가</button>
-      </div>
-    </div>
-  );
+            if (state.process > 100) {
+                dispatch({ type: 'RESET' });
+                clearTimeout(timeout);
+            }
+        }
+
+        return () => {
+            if (timeout) {
+                clearTimeout(timeout);
+            }
+        }
+    }, [state]);
+
+    const handleClick = useCallback(() => dispatch({ type: 'START' }), []);
+
+    return (
+        <div className="App">
+            <LoadingEffect on={state.on} process={state.process}/>
+            <button onClick={handleClick}>로딩 시작</button>
+        </div>
+    );
 }
 
 export default App;
