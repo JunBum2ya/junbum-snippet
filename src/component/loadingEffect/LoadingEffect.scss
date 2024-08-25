@@ -1,0 +1,23 @@
+.loading {
+  display: none;
+  &.on {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+
+    .loading-bar-container {
+      .loading-bar {
+        display: flex;
+        border: #282c34 solid 1px;
+        height: 50px;
+        .complete-process {
+          background-color: blue;
+        }
+        .remain-process {
+          background-color: #282c34;
+        }
+      }
+    }
+  }
+}
