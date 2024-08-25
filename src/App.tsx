@@ -1,22 +1,22 @@
 import './App.css';
-import LoadingEffect from "./component/loadingEffect/LoadingEffect";
-import {useCallback, useEffect, useState} from "react";
+
+import {useCallback, useEffect, useReducer} from "react";
+import {LoadingEffect, LoadingEffectState, loadingBarReducer} from "./component/loadingEffect/LoadingEffect";
+
+const initialState: LoadingEffectState = { on: false, process: 0 };
 
 function App() {
 
-    const [processOn, setProcessOn] = useState<boolean>(false);
-    const [process, setProcess] = useState<number>(0);
+    const [state, dispatch] = useReducer(loadingBarReducer, initialState);
 
     useEffect(() => {
         let timeout: NodeJS.Timeout | null = null;
 
-        if (processOn) {
-            timeout = setTimeout(() => {
-                setProcess(current => current + 1);
-            }, 1000);
+        if (state.on) {
+            timeout = setTimeout(() => dispatch({ type: 'PROCESS' }), 1000);
 
-            if (process > 100) {
-                setProcessOn(false);
+            if (state.process > 100) {
+                dispatch({ type: 'RESET' });
                 clearTimeout(timeout);
             }
         }
@@ -26,16 +26,13 @@ function App() {
                 clearTimeout(timeout);
             }
         }
-    }, [processOn, process]);
+    }, [state]);
 
-    const handleClick = useCallback(() => {
-        setProcess(0);
-        setProcessOn(true);
-    }, []);
+    const handleClick = useCallback(() => dispatch({ type: 'START' }), []);
 
     return (
         <div className="App">
-            <LoadingEffect on={processOn} process={process}/>
+            <LoadingEffect on={state.on} process={state.process}/>
             <button onClick={handleClick}>로딩 시작</button>
         </div>
     );

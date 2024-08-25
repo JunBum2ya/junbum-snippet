@@ -1,7 +1,7 @@
 import {Component} from "react";
 import './LoadingEffect.scss';
 
-class LoadingEffect extends Component<LoadingEffectProps, LoadingEffectState> {
+export class LoadingEffect extends Component<LoadingEffectProps, LoadingEffectState> {
     state = {
         on: false,
         process: 0
@@ -11,22 +11,22 @@ class LoadingEffect extends Component<LoadingEffectProps, LoadingEffectState> {
 
     constructor(props: LoadingEffectProps) {
         super(props);
-        console.log('constructor');
+        console.debug('constructor');
     }
 
     static getDerivedStateFromProps(nextProps: LoadingEffectProps, prevState: LoadingEffectProps): LoadingEffectState | null {
-        console.log("getDerivedStateFromProps");
+        console.debug("getDerivedStateFromProps");
         const {on, process} = nextProps;
         //100보다 클 수 없게 셋팅
         return { on: on, process: process > 100 ? 100 : process };
     }
 
     componentDidMount() {
-        console.log("componentDidMount");
+        console.debug("componentDidMount");
     }
 
     shouldComponentUpdate(nextProps: Readonly<LoadingEffectProps>, nextState: Readonly<LoadingEffectState>, nextContext: any): boolean {
-        console.log('shouldComponentUpdate', nextProps, nextState, nextContext);
+        console.debug('shouldComponentUpdate', nextProps, nextState, nextContext);
         if(!this.state.on && !nextState.on) {
             //off 상태일 경우에는 리랜더링을 안함
             return false;
@@ -36,7 +36,7 @@ class LoadingEffect extends Component<LoadingEffectProps, LoadingEffectState> {
     }
 
     componentWillUnmount() {
-        console.log("componentWillUnmount");
+        console.debug("componentWillUnmount");
     }
 
     getSnapshotBeforeUpdate(prevProps: Readonly<LoadingEffectProps>, prevState: Readonly<LoadingEffectState>): any {
@@ -48,14 +48,14 @@ class LoadingEffect extends Component<LoadingEffectProps, LoadingEffectState> {
     }
 
     componentDidUpdate(prevProps: Readonly<LoadingEffectProps>, prevState: Readonly<LoadingEffectState>, snapshot?: any) {
-        console.log("componentDidUpdate", prevProps, prevState);
+        console.debug("componentDidUpdate", prevProps, prevState);
         if (snapshot) {
-            console.log("업데이트 되기전의 이미지: ", snapshot);
+            console.debug("업데이트 되기전의 이미지: ", snapshot);
         }
     }
 
     render() {
-        console.log("render");
+        console.debug("render");
         return (
             <div className={`loading${this.state.on ? ' on' : ''}`}>
                 <div>{`로딩 중입니다. ${this.state.process}%`}</div>
@@ -71,14 +71,30 @@ class LoadingEffect extends Component<LoadingEffectProps, LoadingEffectState> {
 
 }
 
-interface LoadingEffectProps {
+export const loadingBarReducer = (state: LoadingEffectState, action: LoadingEffectAction): LoadingEffectState => {
+    switch (action.type) {
+        case "START":
+            return { on: true, process: 0 };
+        case "RESET":
+            return { on: false, process: 0 };
+        case "PROCESS":
+            return { on: true, process: state.process + 1 };
+        default:
+            return state;
+    }
+};
+
+export type LoadingEffectProps = {
     on: boolean;
     process: number;
 }
 
-interface LoadingEffectState {
+export type LoadingEffectState = {
     on: boolean;
     process: number;
 }
 
-export default LoadingEffect;
+export type LoadingEffectAction =
+    | {type: 'START'}
+    | {type: 'RESET'}
+    | {type: 'PROCESS'}
