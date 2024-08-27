@@ -1,38 +1,28 @@
 import './App.css';
 
-import {useCallback, useEffect, useReducer} from "react";
-import {LoadingEffect, LoadingEffectState, loadingBarReducer} from "./component/loadingEffect/LoadingEffect";
+import {BlockingModal} from "./component/blockingModal/BlockingModal";
+import {useCallback, useState} from "react";
+import SelectBox from "./component/selectBox/SelectBox";
 
-const initialState: LoadingEffectState = { on: false, process: 0 };
 
 function App() {
 
-    const [state, dispatch] = useReducer(loadingBarReducer, initialState);
+    const [block, setBlock] = useState(false);
 
-    useEffect(() => {
-        let timeout: NodeJS.Timeout | null = null;
-
-        if (state.on) {
-            timeout = setTimeout(() => dispatch({ type: 'PROCESS' }), 1000);
-
-            if (state.process > 100) {
-                dispatch({ type: 'RESET' });
-                clearTimeout(timeout);
-            }
-        }
-
-        return () => {
-            if (timeout) {
-                clearTimeout(timeout);
-            }
-        }
-    }, [state]);
-
-    const handleClick = useCallback(() => dispatch({ type: 'START' }), []);
+    const handleClick = useCallback(() => setBlock(!block), []);
 
     return (
         <div className="App">
-            <LoadingEffect on={state.on} process={state.process}/>
+            <BlockingModal on={block}>
+                <div className={`modal-content`} style={{width: '500px', height: '500px', backgroundColor: '#f4f'}}>test</div>
+            </BlockingModal>
+            <div style={{width: '200px'}}>
+                <SelectBox data={[
+                    {label: 'blue', value: 'C01'},
+                    {label: 'red', value: 'C02'},
+                    {label: 'yellow', value: 'C03'},
+                ]} placeHolder={'값을 선택하세요.'}/>
+            </div>
             <button onClick={handleClick}>로딩 시작</button>
         </div>
     );
