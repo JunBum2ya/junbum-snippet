@@ -1,29 +1,42 @@
 import './App.css';
 
-import {BlockingModal} from "./component/blockingModal/BlockingModal";
-import {useCallback, useState} from "react";
-import SelectBox from "./component/selectBox/SelectBox";
+import {Todo, TodoTemplate} from "./component/todo/TodoTemplate";
+import {useCallback, useRef, useState} from "react";
 
 
-function App() {
+const App = () => {
 
-    const [block, setBlock] = useState(false);
+    const createBulkTodos = () => {
+      const array: Todo[] = [];
+      for(let i = 1; i <= 2500; i++) {
+          array.push({id: i, text: `할 일 ${i}`, checked: false});
+      }
+      return array;
+    };
 
-    const handleClick = useCallback(() => setBlock(!block), []);
+    const [todos, setTodos] = useState<Todo[]>(createBulkTodos);
+
+    const nextId = useRef(2501);
+
+    const onInsert = useCallback((text: string) => {
+        if(text) {
+            const todo = {id: nextId.current, text: text, checked: false};
+            setTodos(todos.concat(todo));
+            nextId.current += 1;
+        }
+    },[todos]);
+
+    const onRemove = useCallback((id: number) => {
+        setTodos(todos.filter((todo) => todo.id !== id));
+    },[todos]);
+
+    const onToggle = useCallback((id: number) => {
+        setTodos(todos.map(todo => todo.id === id ? {...todo, checked: !todo.checked} : todo));
+    },[todos]);
 
     return (
         <div className="App">
-            <BlockingModal on={block}>
-                <div className={`modal-content`} style={{width: '500px', height: '500px', backgroundColor: '#f4f'}}>test</div>
-            </BlockingModal>
-            <div style={{width: '200px'}}>
-                <SelectBox data={[
-                    {label: 'blue', value: 'C01'},
-                    {label: 'red', value: 'C02'},
-                    {label: 'yellow', value: 'C03'},
-                ]} placeHolder={'값을 선택하세요.'}/>
-            </div>
-            <button onClick={handleClick}>로딩 시작</button>
+            <TodoTemplate todos={todos} onInsert={onInsert} onRemove={onRemove} onToggle={onToggle}/>
         </div>
     );
 }
