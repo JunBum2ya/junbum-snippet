@@ -51,7 +51,7 @@ const TodoList: React.FC<TodoListProps> = React.memo(({todos, onRemove, onToggle
     );
 });
 
-const TodoItem: React.FC<TodoItemProps> = ({id, text, checked, onRemove, onToggle}) => {
+const TodoItem: React.FC<TodoItemProps> = React.memo(({id, text, checked, onRemove, onToggle}) => {
     return (
         <div className={`TodoItem`}>
             <div className={cn(`checkbox`, {checked})} onClick={() => onToggle(id)}>
@@ -63,7 +63,7 @@ const TodoItem: React.FC<TodoItemProps> = ({id, text, checked, onRemove, onToggl
             </div>
         </div>
     );
-};
+});
 
 type TodoTemplateProps = {
     todos: Todo[];
