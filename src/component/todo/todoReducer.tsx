@@ -1,17 +1,24 @@
 import {Todo} from "./TodoTemplate";
+import {produce} from "immer";
 
 export const todoReducer = (todos: Todo[], action: TodoAction): Todo[] => {
-    switch (action.type) {
-        case "INSERT":
-            if(!action.todo) throw Error("Not Data");
-            return todos.concat(action.todo);
-        case "REMOVE":
-            return todos.filter(todo => todo.id !== action.id);
-        case "TOGGLE":
-            return todos.map(todo => todo.id === action.id ? {...todo, checked: !todo.checked} : todo);
-        default:
-            return todos;
-    }
+    return produce(todos, draft => {
+       switch (action.type) {
+           case "INSERT":
+               if(!action.todo) throw Error("Not Data");
+               return draft.concat(action.todo);
+           case "REMOVE":
+               return draft.filter(todo => todo.id !== action.id);
+           case "TOGGLE":
+               const todo = draft.find(todo => todo.id === action.id);
+               if(todo) {
+                   todo.checked = !todo.checked;
+               }
+               return draft;
+           default:
+               return draft;
+       }
+    });
 };
 
 type TodoAction = {
