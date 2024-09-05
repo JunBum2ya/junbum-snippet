@@ -7,10 +7,6 @@ const SelectBox: React.FC<SelectBoxProps> = ({data, onChange, placeHolder}) => {
         = useState<{value: string, label: string}>({value: placeHolder ? "" : data[0].value, label: placeHolder ? placeHolder : data[0].label});
     const [open, setOpen] = useState<boolean>(false);
 
-    const handleClick = (e: MouseEvent) => {
-        setOpen(() => !open)
-    }
-
     const handleItemClick = (targetValue: string, targetLabel: string) => {
         setValue({ value: targetValue, label: targetLabel });
         if(onChange) {
@@ -19,12 +15,12 @@ const SelectBox: React.FC<SelectBoxProps> = ({data, onChange, placeHolder}) => {
     }
 
     return (
-        <div className={`select_box`} onClick={() => setOpen(!open)}>
-            <div className={"text"}>{value.label}</div>
-            <div className={`menu${open && " open"}`}>
+        <div className={`select_box${open ? " open" : ''}`} onClick={() => setOpen(!open)}>
+            <div className={"text"}>{value.label}<i className={'arrow'}></i></div>
+            <div className={`menu`}>
                 {
                     data.map((item, index) =>
-                        <div key={index} className={`item`} onClick={() => handleItemClick(item.value, item.label)}>
+                        <div key={index} className={`item ${item.value === value.value ? 'selected' : ''}`} onClick={() => handleItemClick(item.value, item.label)}>
                             {item.label}
                         </div>
                     )
