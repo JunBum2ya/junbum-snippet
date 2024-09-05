@@ -1,14 +1,48 @@
 .select_box {
-  width: 100%;
   border: #000 solid 1px;
   background-color: transparent;
+  display: inline-block;
+  width: 100px;
+  position: relative;
+  .text {
+    position: relative;
+    margin: 3px;
+    padding: 3px;
+    .arrow:after {
+      content: "";
+      position: absolute;
+      display: inline-block;
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid black;
+      margin-left: 8px;
+      right: 4px;
+      bottom: 6px;
+    }
+  }
+  &.open {
+    border: #00f solid 1px;
+    .menu {
+      position: absolute;
+      display: inline-block;
+      width: 100px;
+      z-index: 1;
+      background: #fff;
+      border-top: none;
+      left: -1px;
+      border-left: 1px solid #00f;
+      border-right: 1px solid #00f;
+      border-bottom: 1px solid #00f;
+    }
+  }
   .menu {
     display: none;
-    &.open {
-      display: block;
-    }
     .item {
       background-color: transparent;
+      margin: 3px;
+      padding: 4px;
       &.selected {
         background-color: #f1f3f5;
       }

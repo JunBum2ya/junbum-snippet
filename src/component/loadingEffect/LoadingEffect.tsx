@@ -68,7 +68,6 @@ export class LoadingEffect extends Component<LoadingEffectProps, LoadingEffectSt
             </div>
         );
     }
-
 }
 
 export const loadingBarReducer = (state: LoadingEffectState, action: LoadingEffectAction): LoadingEffectState => {
