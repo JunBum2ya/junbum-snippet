@@ -1,7 +1,6 @@
 import {HtmlCaptureTemplate} from "../component/htmlCapture/HtmlCaptureTemplate";
 import Lucid from "../assets/image/lucid.jpg";
 import {useCallback, useState} from "react";
-import html2canvas from "html2canvas";
 
 const HtmlCapturePage = () => {
 
