@@ -3,6 +3,7 @@ import Main from "./pages/Main";
 import TodoPage from "./pages/TodoPage";
 import SelectBoxPage from "./pages/SelectBoxPage";
 import HtmlCapturePage from "./pages/HtmlCapturePage";
+import ColorPage from "./pages/ColorPage";
 
 const App = () => {
     return (
@@ -11,6 +12,7 @@ const App = () => {
             <Route path={`/todo`} element={<TodoPage/>}/>
             <Route path={'/select'} element={<SelectBoxPage/>}/>
             <Route path={'/capture'} element={<HtmlCapturePage/>}/>
+            <Route path={'/color'} element={<ColorPage/>}/>
         </Routes>
     );
 }
