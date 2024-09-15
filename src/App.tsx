@@ -4,6 +4,7 @@ import TodoPage from "./pages/TodoPage";
 import SelectBoxPage from "./pages/SelectBoxPage";
 import HtmlCapturePage from "./pages/HtmlCapturePage";
 import ColorPage from "./pages/ColorPage";
+import ClockPage from "./pages/ClockPage";
 
 const App = () => {
     return (
@@ -13,6 +14,7 @@ const App = () => {
             <Route path={'/select'} element={<SelectBoxPage/>}/>
             <Route path={'/capture'} element={<HtmlCapturePage/>}/>
             <Route path={'/color'} element={<ColorPage/>}/>
+            <Route path={`/clock`} element={<ClockPage/>}/>
         </Routes>
     );
 }
