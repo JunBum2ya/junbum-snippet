@@ -4,7 +4,7 @@ import './Todo.scss';
 import {MdAdd, MdCheckBox, MdCheckBoxOutlineBlank, MdRemoveCircleOutline} from "react-icons/md";
 
 export const TodoTemplate: React.FC<TodoTemplateProps>
-    = ({todos, onInsert, onRemove, onToggle}) => {
+    = ({input, todos, onChangeInput, onInsert, onRemove, onToggle}) => {
     return (
         <div className={`TodoTemplate`}>
             <div className={`app-title`}>일정 관리</div>
@@ -66,7 +66,9 @@ const TodoItem: React.FC<TodoItemProps> = React.memo(({id, text, checked, onRemo
 });
 
 type TodoTemplateProps = {
+    input: string;
     todos: Todo[];
+    onChangeInput: OnChangeInputType;
     onInsert: OnInsertType;
     onRemove: OnRemoveType;
     onToggle: OnToggleType;
@@ -90,6 +92,7 @@ type TodoInsertProps = {
     onInsert: OnInsertType;
 };
 
+type OnChangeInputType = (e: string) => void;
 type OnInsertType = (e: string) => void;
 type OnRemoveType = (e: number) => void;
 type OnToggleType = (e: number) => void;
