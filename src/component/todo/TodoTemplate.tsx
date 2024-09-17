@@ -9,30 +9,28 @@ export const TodoTemplate: React.FC<TodoTemplateProps>
         <div className={`TodoTemplate`}>
             <div className={`app-title`}>일정 관리</div>
             <div className={`content`}>
-                <TodoInsert onInsert={onInsert}/>
+                <TodoInsert input={input} onChangeInput={onChangeInput} onInsert={onInsert}/>
                 <TodoList todos={todos} onRemove={onRemove} onToggle={onToggle}/>
             </div>
         </div>
     );
 };
 
-const TodoInsert: React.FC<TodoInsertProps> = ({onInsert}) => {
-
-    const [value, setValue] = useState("");
+const TodoInsert: React.FC<TodoInsertProps> = ({input, onChangeInput, onInsert}) => {
 
     const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        setValue(e.target.value);
-    }, []);
+        onChangeInput(e.target.value);
+    }, [onChangeInput]);
 
     const onSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        onInsert(value);
-        setValue('');
-    }, [onInsert, value]);
+        onInsert(input);
+        onChangeInput('');
+    }, [onInsert, input, onChangeInput]);
 
     return (
         <form className={`TodoInsert`} onSubmit={onSubmit}>
-            <input placeholder={`할 일을 입력하세요.`} value={value} onChange={onChange}/>
+            <input placeholder={`할 일을 입력하세요.`} value={input} onChange={onChange}/>
             <button type={`submit`}>
                 <MdAdd/>
             </button>
@@ -89,6 +87,8 @@ type TodoItemProps = {
 };
 
 type TodoInsertProps = {
+    input: string;
+    onChangeInput: OnChangeInputType;
     onInsert: OnInsertType;
 };
 
