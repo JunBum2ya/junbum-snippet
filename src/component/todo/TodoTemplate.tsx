@@ -1,7 +1,8 @@
-import React, {ChangeEvent, FormEvent, useCallback, useState} from "react";
+import React, {ChangeEvent, FormEvent, useCallback} from "react";
 import cn from 'classnames';
 import './Todo.scss';
 import {MdAdd, MdCheckBox, MdCheckBoxOutlineBlank, MdRemoveCircleOutline} from "react-icons/md";
+import {TodoInsertProps, TodoItemProps, TodoListProps, TodoTemplateProps} from "../../types/todo";
 
 export const TodoTemplate: React.FC<TodoTemplateProps>
     = ({input, todos, onChangeInput, onInsert, onRemove, onToggle}) => {
@@ -62,43 +63,3 @@ const TodoItem: React.FC<TodoItemProps> = React.memo(({id, text, checked, onRemo
         </div>
     );
 });
-
-type TodoTemplateProps = {
-    input: string;
-    todos: Todo[];
-    onChangeInput: OnChangeInputType;
-    onInsert: OnInsertType;
-    onRemove: OnRemoveType;
-    onToggle: OnToggleType;
-};
-
-type TodoListProps = {
-    todos: Todo[];
-    onRemove: OnRemoveType;
-    onToggle: OnToggleType;
-};
-
-type TodoItemProps = {
-    id: number;
-    text: string;
-    checked: boolean;
-    onRemove: OnRemoveType;
-    onToggle: OnToggleType;
-};
-
-type TodoInsertProps = {
-    input: string;
-    onChangeInput: OnChangeInputType;
-    onInsert: OnInsertType;
-};
-
-type OnChangeInputType = (e: string) => void;
-type OnInsertType = (e: string) => void;
-type OnRemoveType = (e: number) => void;
-type OnToggleType = (e: number) => void;
-
-export interface Todo {
-    id: number;
-    text: string;
-    checked: boolean;
-}

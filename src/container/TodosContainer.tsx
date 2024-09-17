@@ -1,7 +1,8 @@
-import {Todo, TodoTemplate} from "../component/todo/TodoTemplate";
+import {TodoTemplate} from "../component/todo/TodoTemplate";
 import React from "react";
 import {connect} from "react-redux";
-import todos, {changeInput, insert, remove, toggle} from "../modules/todos";
+import {changeInput, insert, remove, toggle} from "../modules/todos";
+import {OnChangeInputType, OnInsertType, OnRemoveType, OnToggleType, Todo} from "../types/todo";
 
 const TodosContainer: React.FC<TodosContainerProps> = ({input, todos, changeInput, insert, toggle, remove}) => {
     return (
@@ -12,13 +13,23 @@ const TodosContainer: React.FC<TodosContainerProps> = ({input, todos, changeInpu
 type TodosContainerProps = {
   input: string;
   todos: Todo[];
-  changeInput: any;
-  insert: any;
-  toggle: any;
-  remove: any;
+  changeInput: OnChangeInputType;
+  insert: OnInsertType;
+  toggle: OnToggleType;
+  remove: OnRemoveType;
 };
 
-export default connect((state: any) => ({
+type StateType = {
+    rootReducer: {
+        todos: {
+            input: string;
+            todos: Todo[];
+        }
+    }
+}
+
+export default connect((state: StateType) => ({
     input: state.rootReducer.todos.input,
     todos: state.rootReducer.todos.todos
-}),{changeInput, insert, toggle, remove})(TodosContainer)
+}),{changeInput, insert, toggle, remove})(TodosContainer);
+

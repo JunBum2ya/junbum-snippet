@@ -1,4 +1,4 @@
-import {Todo} from "../component/todo/TodoTemplate";
+import {Todo} from "../types/todo";
 
 const moduleName = `todos`;
 
