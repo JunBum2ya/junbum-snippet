@@ -27,7 +27,19 @@ export type TodoInsertProps = {
     onInsert: OnInsertType;
 };
 
-export type OnChangeInputType = (e: string) => void;
+export type TodosStateType = {
+    input: string,
+    todos: Todo[]
+};
+
+export type TodosActionType = {
+    type: string,
+    input?: string,
+    todo?: Todo,
+    id?: number
+};
+
+export type OnChangeInputType = (input: string) => void;
 export type OnInsertType = (e: string) => void;
 export type OnRemoveType = (e: number) => void;
 export type OnToggleType = (e: number) => void;

@@ -1,22 +1,20 @@
 import {TodoTemplate} from "../component/todo/TodoTemplate";
-import React from "react";
-import {connect} from "react-redux";
+import React, {useCallback} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import {changeInput, insert, remove, toggle} from "../modules/todos";
-import {OnChangeInputType, OnInsertType, OnRemoveType, OnToggleType, Todo} from "../types/todo";
+import {Todo} from "../types/todo";
+import useActions from "../lib/useActions";
 
-const TodosContainer: React.FC<TodosContainerProps> = ({input, todos, changeInput, insert, toggle, remove}) => {
+const TodosContainer = () => {
+
+    const {input, todos} = useSelector((state: StateType) => state.rootReducer.todos);
+
+    const [onChangeInput, onInsert, onToggle, onRemove] = useActions([changeInput, insert, toggle, remove], []);
+
     return (
-        <TodoTemplate input={input} todos={todos} onChangeInput={changeInput} onInsert={insert} onRemove={remove} onToggle={toggle}/>
+        <TodoTemplate input={input} todos={todos} onChangeInput={onChangeInput} onInsert={onInsert} onRemove={onRemove}
+                      onToggle={onToggle}/>
     );
-};
-
-type TodosContainerProps = {
-  input: string;
-  todos: Todo[];
-  changeInput: OnChangeInputType;
-  insert: OnInsertType;
-  toggle: OnToggleType;
-  remove: OnRemoveType;
 };
 
 type StateType = {
@@ -28,8 +26,5 @@ type StateType = {
     }
 }
 
-export default connect((state: StateType) => ({
-    input: state.rootReducer.todos.input,
-    todos: state.rootReducer.todos.todos
-}),{changeInput, insert, toggle, remove})(TodosContainer);
+export default TodosContainer;
 
