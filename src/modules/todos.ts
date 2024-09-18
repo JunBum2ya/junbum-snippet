@@ -1,81 +1,68 @@
-import {Todo} from "../types/todo";
+import {action, ActionType, createAction, createReducer} from "typesafe-actions";
 
-const moduleName = `todos`;
+const moduleName = `todos` as const;
 
-const CHANGE_INPUT = `${moduleName}/CHANGE_INPUT`;
-const INSERT = `${moduleName}/INSERT`;
-const TOGGLE = `${moduleName}/TOGGLE`;
-const REMOVE = `${moduleName}/REMOVE`;
+const CHANGE_INPUT = `${moduleName}/CHANGE_INPUT` as const;
+const INSERT = `${moduleName}/INSERT` as const;
+const TOGGLE = `${moduleName}/TOGGLE` as const;
+const REMOVE = `${moduleName}/REMOVE` as const;
 
 let id = 0;
 
-export const changeInput = (input: string) => ({
-    type: CHANGE_INPUT,
-    input
-});
+export const changeInput = createAction(CHANGE_INPUT)<string>();
 
-export const insert = (text: string): {type: string, todo: Todo} => ({
-   type: INSERT,
-   todo: {
-       id: id++,
-       text,
-       checked: false
-   }
-});
+export const insert = createAction(INSERT, (text: string) => ({
+    id: id++,
+    text,
+    checked: false
+}))<Todo>();
 
-export const toggle = (id: number) => ({
-   type: TOGGLE,
-   id
-});
+export const toggle = createAction(TOGGLE)<number>();
 
-export const remove = (id: number) => ({
-   type: REMOVE,
-   id
-});
+export const remove = createAction(REMOVE)<number>();
 
-type TodosStateType = {
-    input: string,
-    todos: Todo[]
+const actions = {
+  changeInput,
+  insert,
+  toggle,
+  remove
 };
 
-type TodosActionType = {
-    type: string,
-    input?: string,
-    todo?: Todo,
-    id?: number
+type TodosAction = ActionType<typeof actions>;
+
+export type TodosState = {
+    input: string;
+    todos: Todo[];
 };
 
-const initialState: TodosStateType = {
+export type Todo = {
+    id: number;
+    text: string;
+    checked: boolean;
+};
+
+const initialState: TodosState = {
     input: '',
     todos: []
 };
 
-const todos = (state = initialState, action: TodosActionType): TodosStateType => {
-    switch (action.type) {
-        case CHANGE_INPUT:
-            return {
-                ...state,
-                input: action.input ?? ''
-            };
-        case INSERT:
-            if(!action.todo) throw new Error("Fail Insert todo");
-            return {
-                ...state,
-                todos: state.todos.concat(action.todo)
-            }
-        case TOGGLE:
-            return {
-                ...state,
-                todos: state.todos.map(todo => todo.id === action.id ? {...todo, checked: !todo.checked} : todo)
-            }
-        case REMOVE:
-            return {
-                ...state,
-                todos: state.todos.filter(todo => todo.id !== action.id)
-            }
-        default:
-            return state;
-    }
-};
+const todos = createReducer<TodosState, TodosAction>(initialState, {
+    [CHANGE_INPUT]: (state, action) => ({
+        ...state,
+        input: action.payload
+    }),
+    [INSERT]: (state, {payload}) => ({
+        ...state,
+        todos: state.todos.concat(payload)
+    }),
+    [TOGGLE]: (state, {payload}) => ({
+       ...state,
+       todos: state.todos.map(todo => todo.id === payload ? {...todo, checked: !todo.checked} : todo)
+    }),
+    [REMOVE]: (state, {payload}) => ({
+        ...state,
+        todos: state.todos.filter(todo => todo.id !== payload)
+    })
+});
 
 export default todos;
