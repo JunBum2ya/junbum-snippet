@@ -1,5 +1,5 @@
 import {requestPost, requestUsers} from "../../lib/api";
-import {User} from "./types";
+import {Post, User} from "./types";
 
 const moduleName = `api` as const;
 
@@ -14,7 +14,7 @@ export const GET_USERS_FAILURE = `${moduleName}/GET_USERS_FAILURE` as const;
 export const getPost = (id: number) => async (dispatch: any) => {
     dispatch({type: GET_POST});
     try {
-        const response = await requestPost<any>(id);
+        const response = await requestPost<Post>(id);
         dispatch({type: GET_POST_SUCCESS, payload: response.data});
     } catch (e) {
         dispatch({

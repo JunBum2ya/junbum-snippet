@@ -1,8 +1,8 @@
+import {GET_POST, GET_POST_FAILURE, GET_POST_SUCCESS, GET_USERS, GET_USERS_FAILURE, GET_USERS_SUCCESS} from "./actions";
+import {Post, SampleAction, SampleState, User} from "./types";
 import {createReducer} from "typesafe-actions";
-import {GET_POST, GET_POST_FAILURE, GET_POST_SUCCESS, GET_USERS} from "./actions";
-import {SampleAction, SampleState} from "./types";
 
-const initialState = {
+const initialState: SampleState = {
     loading: {
         GET_POST: false,
         GET_USERS: false
@@ -11,7 +11,7 @@ const initialState = {
     users: null
 };
 
-const sample = createReducer<SampleState, any>(initialState, {
+const sample = createReducer<SampleState, SampleAction>(initialState, {
     [GET_POST]: state => ({
         ...state,
         loading: {
@@ -19,15 +19,15 @@ const sample = createReducer<SampleState, any>(initialState, {
             GET_POST: true
         }
     }),
-    [GET_POST_SUCCESS]: (state,action) => ({
+    [GET_POST_SUCCESS]: (state, action) => ({
         ...state,
         loading: {
             ...state.loading,
             GET_POST: false
         },
-        post: action.payload
+        post: action.payload as Post
     }),
-    [GET_POST_FAILURE]: (state,action) => ({
+    [GET_POST_FAILURE]: state => ({
         ...state,
         loading: {
             ...state.loading,
@@ -41,15 +41,15 @@ const sample = createReducer<SampleState, any>(initialState, {
             GET_USERS: true
         }
     }),
-    [GET_POST_SUCCESS]: (state,action) => ({
+    [GET_USERS_SUCCESS]: (state,action) => ({
         ...state,
         loading: {
             ...state.loading,
             GET_USERS: false
         },
-        users: action.paload
+        users: action.payload as User[]
     }),
-    [GET_POST_FAILURE]: state => ({
+    [GET_USERS_FAILURE]: state => ({
         ...state,
         loading: {
             ...state.loading,

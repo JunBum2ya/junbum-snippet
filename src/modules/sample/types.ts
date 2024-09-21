@@ -1,6 +1,3 @@
-import {ActionType} from "typesafe-actions";
-import {actions} from "./actions";
-
 export type Post = {
     userId: number,
     id: number,
@@ -41,4 +38,7 @@ export type SampleState = {
     users: User[] | null
 };
 
-export type SampleAction = ActionType<typeof actions>;
+export type SampleAction = {
+    type: string;
+    payload: any;
+}

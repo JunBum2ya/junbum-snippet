@@ -7,9 +7,11 @@ import {BrowserRouter} from "react-router-dom";
 import {configureStore} from "@reduxjs/toolkit";
 import rootReducer from "./modules";
 import {Provider} from "react-redux";
+import loggerMiddleware from "./middleware/loggerMiddleware";
 
 const store = configureStore({
-    reducer: rootReducer
+    reducer: rootReducer,
+    middleware: getDefaultMiddleware => getDefaultMiddleware().concat(loggerMiddleware)
 });
 
 const root = ReactDOM.createRoot(

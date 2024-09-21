@@ -22,12 +22,14 @@ type SampleContainerProps = {
 }
 
 export default connect(
-    ({sample}: { sample: SampleState }) => ({
-        post: sample.post,
-        users: sample.users,
-        loadingPost: sample.loading.GET_POST,
-        loadingUsers: sample.loading.GET_USERS
-    }), {
+    ({sample}: { sample: SampleState }) => {
+        return ({
+            post: sample.post,
+            users: sample.users,
+            loadingPost: sample.loading.GET_POST,
+            loadingUsers: sample.loading.GET_USERS
+        })
+    }, {
         getPost,
         getUsers
     }
