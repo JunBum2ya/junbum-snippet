@@ -10,8 +10,6 @@ const TodosContainer = () => {
 
     const [onChangeInput, onInsert, onToggle, onRemove] = useActions([changeInput, insert, toggle, remove], []);
 
-    console.log(onChangeInput);
-
     return (
         <TodoTemplate input={input} todos={todos} onChangeInput={onChangeInput} onInsert={onInsert} onRemove={onRemove}
                       onToggle={onToggle}/>
