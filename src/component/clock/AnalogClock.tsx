@@ -2,7 +2,7 @@ import './AnalogClock.scss';
 import {useEffect, useState} from "react";
 import AnalogClockHand from "./AnalogClockHand";
 
-export const AnalogClock = () => {
+const AnalogClock = () => {
 
     const [seconds, setSeconds] = useState(0);
 
@@ -25,3 +25,5 @@ export const AnalogClock = () => {
         </div>
     );
 };
+
+export default AnalogClock;

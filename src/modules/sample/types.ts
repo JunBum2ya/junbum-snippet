@@ -1,3 +1,5 @@
+import {actions} from "./actions";
+
 export type Post = {
     userId: number,
     id: number,
@@ -38,7 +40,4 @@ export type SampleState = {
     users: User[] | null
 };
 
-export type SampleAction = {
-    type: string;
-    payload: any;
-}
+export type SampleAction = any;
